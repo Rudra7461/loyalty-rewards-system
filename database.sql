@@ -1,0 +1,26 @@
+
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    password_hash VARCHAR(255) NOT NULL,
+    total_points INT DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE reward_codes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    code VARCHAR(20) NOT NULL UNIQUE,
+    points_value INT NOT NULL DEFAULT 100,
+    batch_name VARCHAR(50) NOT NULL,
+    is_redeemed TINYINT(1) DEFAULT 0,
+    redeemed_by INT DEFAULT NULL,
+    redeemed_at TIMESTAMP NULL DEFAULT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (redeemed_by) REFERENCES users(id)
+);
+
+CREATE TABLE rate_limits (
+    ip_address VARCHAR(45) PRIMARY KEY,
+    failed_attempts INT DEFAULT 1,
+    last_attempt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
